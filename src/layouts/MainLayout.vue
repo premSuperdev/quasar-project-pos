@@ -12,6 +12,18 @@
                 />
 
                 <q-toolbar-title> {{ title }} </q-toolbar-title>
+                <q-space></q-space>
+                <q-select
+                    v-model="locale"
+                    :options="localeOptions"
+                    label="Quasar Language"
+                    dense
+                    borderless
+                    emit-value
+                    map-options
+                    options-dense
+                    style="min-width: 150px"
+                />
             </q-toolbar>
         </q-header>
 
@@ -34,10 +46,17 @@
     </q-layout>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-
+import { useI18n } from 'vue-i18n'
+const leftDrawerOpen = ref(false)
+const title = ref('Pos')
+const { locale } = useI18n({ useScope: 'global' })
+const localeOptions = [
+    { value: 'en-US', label: 'English' },
+    { value: 'th-TH', label: 'Thai' },
+]
 const linksList = [
     {
         title: 'Item Page',
@@ -82,25 +101,8 @@ const linksList = [
         link: 'https://awesome.quasar.dev',
     },
 ]
-
-export default defineComponent({
-    name: 'MainLayout',
-
-    components: {
-        EssentialLink,
-    },
-
-    setup() {
-        const leftDrawerOpen = ref(false)
-        const title = ref('Pos')
-        return {
-            essentialLinks: linksList,
-            leftDrawerOpen,
-            toggleLeftDrawer() {
-                leftDrawerOpen.value = !leftDrawerOpen.value
-            },
-            title,
-        }
-    },
-})
+function toggleLeftDrawer() {
+    leftDrawerOpen.value = !leftDrawerOpen.value
+}
+const essentialLinks = linksList
 </script>
