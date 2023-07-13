@@ -1,0 +1,42 @@
+{
+  "item": [
+    {
+      "id": 1,
+      "itemId": "dad",
+      "itemName": "json-server",
+      "image": "dasd,psp",
+      "price": 123
+    },
+    {
+      "itemId": "b5177c8e-b430-4b08-a188-428de20dfa39",
+      "itemName": "as",
+      "price": 123,
+      "image": "blob:http://localhost:9000/fc37cf20-f273-47cf-ae45-25f377d67e86",
+      "id": 2
+    },
+    {
+      "itemId": "bad643f8-e984-4f54-92b0-d8a27776062c",
+      "itemName": "as",
+      "price": 123,
+      "image": "blob:http://localhost:9000/aa3f2157-9985-42da-add5-8fdc6623cdd4",
+      "id": 3
+    },
+    {
+      "itemId": "a38c2f04-7302-48b9-9960-dcd507049258",
+      "itemName": "as",
+      "price": 123,
+      "image": {},
+      "id": 4
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

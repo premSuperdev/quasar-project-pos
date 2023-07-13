@@ -4,6 +4,7 @@
         <q-card>
             <q-btn @click="upload">upload</q-btn>
             <q-img :src="imagePictureHref" />
+            <img src="" alt="" srcset="" />
             <q-card-section class="q-pa-md">
                 <div style="width: 500px">sad</div>
             </q-card-section>
@@ -19,6 +20,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { ItemApi } from 'src/composable/item'
 const props = defineProps(['open'])
 const imagePictureHref = ref('https://cdn.quasar.dev/img/parallax2.jpg')
 const emits = defineEmits(['update:open'])
@@ -27,6 +29,7 @@ const binaryFile = ref()
 const open = computed(() => props.open)
 const browseFile = ref()
 const fileList = ref()
+const api = ItemApi()
 function upload() {
     if (!browseFile.value.onchange) {
         browseFile.value.onchange = (e) => {
@@ -37,11 +40,22 @@ function upload() {
                 const reader = new FileReader()
                 reader.onload = async (e) => {
                     const bina = await e.target.result
-                    binaryFile.value = bina
+
+                    const arrayBuffer = new Uint8Array(reader.result).buffer
+
+                    // แปลง ArrayBuffer เป็น Base64 String
+                    binaryFile.value = btoa(
+                        String.fromCharCode.apply(
+                            null,
+                            new Uint8Array(arrayBuffer)
+                        )
+                    )
+                    console.log(binaryFile.value)
                     const blobs = new Blob([bina], {
                         type: 'application/octet-stream',
                     })
                     imagePictureHref.value = URL.createObjectURL(blobs)
+                    console.log(imagePictureHref.value)
                 }
                 reader.readAsArrayBuffer(file)
             }
@@ -50,10 +64,12 @@ function upload() {
     browseFile.value.click()
 }
 async function save() {
-    const file = new File(
-        [binaryFile.value],
-        itemId.value + fileList.value.name
-    )
+    const res = await api.insert({
+        itemName: 'as',
+        price: 123,
+        image: 'data:image/png;base64,' + binaryFile.value,
+    })
+    console.log(res)
 }
 </script>
 <style scoped>

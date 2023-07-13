@@ -11,13 +11,19 @@
     >
     </q-table>
 </template>
+
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import { ItemApi } from 'src/composable/item'
+
 const props = defineProps(['hasNewData'])
 const emits = defineEmits(['update:hasNewData'])
 const loading = ref(true)
 const itemData = ref()
+function inc() {
+    counterStore.increment()
+}
+
 const api = ItemApi()
 watch(
     () => props.hasNewData,
