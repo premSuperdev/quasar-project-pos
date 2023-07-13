@@ -11,7 +11,7 @@
         "test": "echo \"No test specified\" && exit 0",
         "server": "json-server --no-cors --watch db.json",
         "quasar": "quasar dev ",
-        "build": "concurrently \"quasar build\" \"npm run server\"",
+        "build": "concurrently \"npm run server\" \"quasar build\"",
         "dev": "concurrently \"npm run quasar\" \"npm run server\"",
         "deploy": "vercel"
     },
