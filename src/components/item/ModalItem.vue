@@ -1,4 +1,5 @@
 <template>
+    {{ counter }}
     <q-dialog v-model="open" persistent>
         <input class="file-btn" accept="*/png" ref="browseFile" type="file" />
         <q-card>
@@ -20,7 +21,11 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { ItemApi } from 'src/composable/item'
+import { storeToRefs } from 'pinia'
+import { useCounterStore } from 'src/stores/example-store'
+const conterStore = useCounterStore()
+const { counter } = storeToRefs(conterStore)
+// import { ItemApi } from 'src/composable/item'
 const props = defineProps(['open'])
 const imagePictureHref = ref('https://cdn.quasar.dev/img/parallax2.jpg')
 const emits = defineEmits(['update:open'])
@@ -29,7 +34,8 @@ const binaryFile = ref()
 const open = computed(() => props.open)
 const browseFile = ref()
 const fileList = ref()
-const api = ItemApi()
+// const api = ItemApi()
+
 function upload() {
     if (!browseFile.value.onchange) {
         browseFile.value.onchange = (e) => {
@@ -40,22 +46,17 @@ function upload() {
                 const reader = new FileReader()
                 reader.onload = async (e) => {
                     const bina = await e.target.result
-
                     const arrayBuffer = new Uint8Array(reader.result).buffer
-
-                    // แปลง ArrayBuffer เป็น Base64 String
                     binaryFile.value = btoa(
                         String.fromCharCode.apply(
                             null,
                             new Uint8Array(arrayBuffer)
                         )
                     )
-                    console.log(binaryFile.value)
                     const blobs = new Blob([bina], {
                         type: 'application/octet-stream',
                     })
                     imagePictureHref.value = URL.createObjectURL(blobs)
-                    console.log(imagePictureHref.value)
                 }
                 reader.readAsArrayBuffer(file)
             }
@@ -69,7 +70,6 @@ async function save() {
         price: 123,
         image: 'data:image/png;base64,' + binaryFile.value,
     })
-    console.log(res)
 }
 </script>
 <style scoped>

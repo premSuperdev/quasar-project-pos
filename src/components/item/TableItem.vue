@@ -9,32 +9,29 @@
         row-key="name"
         :loading="loading"
     >
+        <template v-slot:body-cell-image="props">
+            <q-td :props="props">
+                <q-img
+                    :src="props.row.image"
+                    spinner-color="white"
+                    style="height: 140px; max-width: 150px"
+                />
+            </q-td>
+        </template>
     </q-table>
+    {{ counter }}
+    <q-btn @click="add"></q-btn>
 </template>
 
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import { ItemApi } from 'src/composable/item'
+import { storeToRefs } from 'pinia'
+// import { ItemApi } from 'src/composable/item'
+import { useItemStore } from 'src/stores/items.store'
+const loading = ref(false)
+const itemStore = useItemStore()
+const { itemData } = storeToRefs(itemStore)
 
-const props = defineProps(['hasNewData'])
-const emits = defineEmits(['update:hasNewData'])
-const loading = ref(true)
-const itemData = ref()
-function inc() {
-    counterStore.increment()
-}
-
-const api = ItemApi()
-watch(
-    () => props.hasNewData,
-    async (value) => {
-        if (value) {
-            await fetchData()
-            console.log('loading ')
-            emits('update:hasNewData', false)
-        }
-    }
-)
 const columns = [
     {
         name: 'itemId',
@@ -51,18 +48,17 @@ const columns = [
         sortable: true,
     },
     {
-        field: 'price',
+        field: 'itemPrice',
+        align: 'center',
+        label: 'Calories',
+        sortable: true,
+    },
+    {
+        name: 'image',
+        field: 'image',
         align: 'center',
         label: 'Calories',
         sortable: true,
     },
 ]
-async function fetchData() {
-    loading.value = true
-    itemData.value = await api.get()
-    loading.value = false
-}
-onMounted(async () => {
-    await fetchData()
-})
 </script>
