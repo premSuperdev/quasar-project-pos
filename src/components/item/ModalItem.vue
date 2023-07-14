@@ -25,7 +25,6 @@ import { storeToRefs } from 'pinia'
 import { useCounterStore } from 'src/stores/example-store'
 const conterStore = useCounterStore()
 const { counter } = storeToRefs(conterStore)
-// import { ItemApi } from 'src/composable/item'
 const props = defineProps(['open'])
 const imagePictureHref = ref('https://cdn.quasar.dev/img/parallax2.jpg')
 const emits = defineEmits(['update:open'])
